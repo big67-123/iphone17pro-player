@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="17Pro 播放器">
+  <meta name="description" content="iPhone 17 Pro 横屏专用视频播放器：相册/文件、倍速、±10秒、锁屏、长按加速、长按拖动进度。">
+  <title>iPhone 17 Pro 播放器</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- 图标库 -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></symbol>
+      <symbol id="i-back10" viewBox="0 0 24 24">
+        <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
+        <text x="12" y="15.1" text-anchor="middle" font-size="6.4" font-weight="700" fill="currentColor">10</text>
+      </symbol>
+      <symbol id="i-fwd10" viewBox="0 0 24 24">
+        <path d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"/>
+        <text x="12" y="15.1" text-anchor="middle" font-size="6.4" font-weight="700" fill="currentColor">10</text>
+      </symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></symbol>
+      <symbol id="i-unlock" viewBox="0 0 24 24"><path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z"/></symbol>
+      <symbol id="i-full" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></symbol>
+      <symbol id="i-full-exit" viewBox="0 0 24 24"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></symbol>
+      <symbol id="i-gear" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></symbol>
+      <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M15.55 5.55 11 1v3.07C7.06 4.56 4 7.92 4 12s3.05 7.44 7 7.93v-2.02c-2.84-.48-5-2.94-5-5.91s2.16-5.43 5-5.91V10l4.55-4.45zM19.93 11c-.17-1.39-.72-2.73-1.62-3.89l-1.42 1.42c.54.75.88 1.6 1.02 2.47h2.02zM13 17.9v2.02c1.39-.17 2.74-.71 3.9-1.61l-1.44-1.44c-.75.54-1.59.89-2.46 1.03zm3.89-2.42 1.42 1.41c.9-1.16 1.45-2.5 1.62-3.89h-2.02c-.14.87-.48 1.72-1.02 2.48z"/></symbol>
+      <symbol id="i-folder" viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></symbol>
+    </defs>
+  </svg>
+
+  <!-- 竖屏提示 / 强制横屏 -->
+  <div id="rotateOverlay" class="rotate-overlay">
+    <div class="rotate-card">
+      <svg class="icon rotate-icon"><use href="#i-rotate"/></svg>
+      <h1>请旋转至横屏</h1>
+      <p>本播放器为横屏专用<br>旋转手机后自动进入横屏模式</p>
+      <button id="forceBtn" class="btn primary">强制横屏（旋转画面）</button>
+      <p class="hint">强制模式可在左上角 ↻ 退出</p>
+    </div>
+  </div>
+
+  <div id="app" class="app">
+    <div id="player" class="player">
+      <video id="video" playsinline preload="metadata"></video>
+
+      <!-- 空状态 -->
+      <div id="emptyState" class="empty-state">
+        <div class="logo">▶<span>17</span></div>
+        <h1>iPhone 17 Pro 播放器</h1>
+        <p class="sub">横屏专用 · 相册 / 文件</p>
+        <div class="empty-actions">
+          <button id="openPhotosBtn" class="btn primary">从相册选择</button>
+          <button id="openFilesBtn" class="btn ghost">从文件选择</button>
+        </div>
+        <p class="hint">点击后在系统选择器中可切换「相册」或「文件」<br>电脑端也支持直接把视频拖进窗口</p>
+      </div>
+
+      <!-- 长按加速提示 -->
+      <div id="boostBadge" class="boost-badge" hidden>长按加速 1.5×</div>
+
+      <!-- 锁屏徽标 -->
+      <div id="lockBadge" class="lock-badge" hidden>
+        <svg class="icon"><use href="#i-lock"/></svg>
+        <span>长按解锁</span>
+      </div>
+
+      <!-- 顶栏 -->
+      <div id="topBar" class="top-bar">
+        <div id="fileName" class="file-name">未选择视频</div>
+        <div class="top-actions">
+          <button id="forceToggleBtn" class="ctrl-btn" hidden title="退出强制横屏" aria-label="退出强制横屏">
+            <svg class="icon"><use href="#i-rotate"/></svg>
+          </button>
+          <button id="openTopBtn" class="ctrl-btn" title="选择视频" aria-label="选择视频">
+            <svg class="icon"><use href="#i-folder"/></svg>
+          </button>
+          <button id="settingsBtn" class="ctrl-btn" title="设置" aria-label="设置">
+            <svg class="icon"><use href="#i-gear"/></svg>
+          </button>
+          <button id="fullBtn" class="ctrl-btn" title="全屏" aria-label="全屏">
+            <svg class="icon"><use href="#i-full"/></svg>
+          </button>
+          <button id="lockBtn" class="ctrl-btn" title="锁屏" aria-label="锁屏">
+            <svg class="icon"><use href="#i-lock"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 底栏 -->
+      <div id="bottomBar" class="bottom-bar">
+        <div class="seek-row">
+          <span id="curTime" class="time">00:00</span>
+          <div id="seekTrack" class="seek-track" role="slider" aria-label="进度条" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div id="seekFill" class="seek-fill"></div>
+            <div id="seekThumb" class="seek-thumb"></div>
+            <div id="seekBubble" class="seek-bubble" hidden>00:00</div>
+          </div>
+          <span id="durTime" class="time">00:00</span>
+        </div>
+        <div class="ctrl-row">
+          <button id="backBtn" class="ctrl-btn big" title="后退 10 秒" aria-label="后退 10 秒">
+            <svg class="icon"><use href="#i-back10"/></svg>
+          </button>
+          <button id="playBtn" class="ctrl-btn play" title="播放 / 暂停" aria-label="播放">
+            <svg class="icon"><use href="#i-play"/></svg>
+          </button>
+          <button id="fwdBtn" class="ctrl-btn big" title="前进 10 秒" aria-label="前进 10 秒">
+            <svg class="icon"><use href="#i-fwd10"/></svg>
+          </button>
+          <div class="spacer"></div>
+          <button id="speedBtn" class="ctrl-btn chip" title="播放速度（点击循环切换）" aria-label="播放速度">1×</button>
+        </div>
+      </div>
+
+      <!-- 设置面板 -->
+      <div id="settingsPanel" class="settings">
+        <div class="settings-backdrop"></div>
+        <div class="settings-sheet">
+          <div class="settings-head">
+            <h2>设置</h2>
+            <button id="settingsClose" class="ctrl-btn" title="关闭" aria-label="关闭">
+              <svg class="icon"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <div class="setting-row">
+            <label>播放速度</label>
+            <div class="seg" id="speedSeg">
+              <button data-speed="0.75">0.75×</button>
+              <button data-speed="1">1×</button>
+              <button data-speed="1.25">1.25×</button>
+              <button data-speed="1.5">1.5×</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <label>长按加速倍率</label>
+            <div class="seg" id="boostSeg">
+              <button data-boost="1.25">1.25×</button>
+              <button data-boost="1.5">1.5×</button>
+              <button data-boost="2">2×</button>
+              <button data-boost="2.5">2.5×</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <label>自动隐藏控制栏</label>
+            <button id="autoHideSwitch" class="switch" role="switch" aria-checked="true">
+              <span class="knob"></span>
+            </button>
+          </div>
+          <p class="settings-tip">长按画面 = 临时加速播放（松手恢复）<br>长按进度条拖动 = 精确跳转并显示时间</p>
+        </div>
+      </div>
+
+      <!-- 轻提示 -->
+      <div id="toast" class="toast" hidden></div>
+    </div>
+  </div>
+
+  <input type="file" id="fileInput" accept="video/*" hidden>
+  <script src="app.js"></script>
+</body>
+</html>
